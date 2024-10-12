@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Member API
+  version: 1.0.0
+  description: API for managing members.
+servers:
+  - url: http://localhost:8080/api
+    description: Local server
+
+paths:
+  /member:
+    post:
+      summary: Create a new member
+      description: Create a new member with basic details.
+      operationId: createMember
+      tags:
+        - Member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberRequest'
+      responses:
+        '200':
+          description: Member created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiResponse'
+        '400':
+          description: Invalid input data.
+
+    get:
+      summary: Fetch member by email
+      description: Fetch a member by their email.
+      operationId: fetchByEmail
+      tags:
+        - Member
+      parameters:
+        - name: email
+          in: query
+          required: true
+          description: The email of the member to fetch.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Member fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiResponse'
+        '404':
+          description: Member not found.
+
+  /member/list:
+    get:
+      summary: Get all members
+      description: Fetch all members.
+      operationId: listMembers
+      tags:
+        - Member
+      responses:
+        '200':
+          description: List of members fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiResponse'
+
+  /member/{id}:
+    get:
+      summary: Fetch member by ID
+      description: Fetch a member by their ID.
+      operationId: fetchById
+      tags:
+        - Member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the member to fetch.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Member fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiResponse'
+        '404':
+          description: Member not found.
+
+    delete:
+      summary: Delete member by ID
+      description: Delete a member by their ID.
+      operationId: deleteMember
+      tags:
+        - Member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the member to delete.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Member deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiResponse'
+        '404':
+          description: Member not found.
+
+components:
+  schemas:
+    MemberRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      required:
+        - name
+        - email
+    MemberResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+    RestApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+        success:
+          type: boolean
+      required:
+        - message
+        - result
+        - success
