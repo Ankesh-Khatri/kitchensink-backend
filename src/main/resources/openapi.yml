@@ -6,7 +6,6 @@ info:
 servers:
   - url: http://localhost:8080/api
     description: Local server
-
 paths:
   /member:
     post:
@@ -30,7 +29,6 @@ paths:
                 $ref: '#/components/schemas/RestApiResponse'
         '400':
           description: Invalid input data.
-
     get:
       summary: Fetch member by email
       description: Fetch a member by their email.
